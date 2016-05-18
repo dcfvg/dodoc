@@ -1084,23 +1084,36 @@ MEDIA METHODS
           pathToFile = mediaPath + '/' + newFileName;
           fileExtension = '.webm';
 
-          writeVideoToDisk( pathToFile, fileExtension, newMediaData.mediaData)
-          .then(function() {
-            console.error("Saved a video.");
-            createMediaMeta( newMediaType, pathToFile, fileExtension, newFileName).then( function( mdata) {
-              mdata.slugFolderName = slugFolderName;
-              mdata.slugProjectName = slugProjectName;
-              mdata.mediaFolderPath = mediaFolder;
-
-              createThumbnails( pathToFile + fileExtension, newFileName, mediaPath).then(function( mediaFolderContent) {
-                resolve( mdata);
-              }, function(error) {
-                console.log( gutil.colors.red('--> Failed to make a thumbnail one media! Error: ', error));
-                resolve( mdata);
-              });
-            }, function() {
-              reject( 'failed to create meta for video');
-            });
+          writeVideoToDisk( pathToFile, fileExtension, newMediaData.mediaData).then(function() {
+            // ask ffmpeg to make a video from the cache images
+            dev.log("Will take video through ffmpeg");
+            var proc = new ffmpeg({ "source" : pathToFile + fileExtension})
+              //.addInput(audioFile)
+              .on('error', function(err) {
+                console.log('an error happened: ' + err.message);
+            		reject( "couldn't create a stopmotion animation");
+              })
+              .on('progress', function (progress) {
+                console.log('Compiling video: ' + progress.frames + ' frames done');
+              })
+              .on('end', function() {
+                console.log('video has been converted succesfully');
+                createMediaMeta( newMediaType, pathToFile, fileExtension, newFileName).then( function( mdata) {
+                  mdata.slugFolderName = slugFolderName;
+                  mdata.slugProjectName = slugProjectName;
+                  mdata.mediaFolderPath = mediaFolder;
+                  createThumbnails( pathToFile + fileExtension, newFileName, mediaPath).then(function( mediaFolderContent) {
+                    resolve( mdata);
+                  }, function(error) {
+                    console.log( gutil.colors.red('--> Failed to make a thumbnail one media! Error: ', error));
+                    resolve( mdata);
+                  });
+                }, function() {
+                  reject( 'failed to create meta for video');
+                });
+              })
+              // save to file
+              .save( pathToFile + '-plop' + fileExtension);
 
           }, function(error) {
             console.error("Failed to save video! Error: ", error);
@@ -1134,7 +1147,7 @@ MEDIA METHODS
                 createThumbnails( pathToFile + fileExtension, newFileName, mediaPath).then(function( mediaFolderContent) {
                   resolve( mdata);
                 }, function(error) {
-                  console.error("Failed to make a thumbnail one media! Error: ", error);
+                  console.log( gutil.colors.red('--> Failed to make a thumbnail one media! Error: ', error));
                   resolve( mdata);
                 });
               }, function() {
@@ -1541,7 +1554,6 @@ PUBLIS METHODS
 
       dataURL = dataURL.split(',').pop();
       dev.log( 'Will save the video at path : ' + pathToFile + fileExtension);
-
       var fileBuffer = new Buffer(dataURL, 'base64');
   		fs.writeFile( pathToFile + fileExtension, fileBuffer, function(err) {
         if (err) reject( err);
