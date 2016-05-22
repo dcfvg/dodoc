@@ -678,6 +678,8 @@ function onMediaCreated( mediasData){
 
   var cameraPreview = document.getElementById('video-stream');
 
+  debugger;
+
   $(document)
     .data('lastCapturedMediaName', mediaName)
     .data('lastCapturedMediaFolderPath', mediasFolderPath)
@@ -688,11 +690,27 @@ function onMediaCreated( mediasData){
     animateWindows();
   }
   else if( newMediaType === 'video') {
-    videoMode.showVideoPreview( pathToMediaFile + '.webm');
+
+    var videoFilename;
+    $.each( mediaData.files, function( key, mediaFilename) {
+      if ( mediaFilename.indexOf( "mp4") !== false ||  mediaFilename.indexOf( "webm") !== false) {
+        videoFilename = mediaFilename;
+      }
+    });
+
+    videoMode.showVideoPreview( videoFilename);
     animateWindows();
   }
   else if( newMediaType === 'animation') {
-    stopMotionMode.showStopMotionPreview( pathToMediaFile + '.mp4');
+
+    var videoFilename;
+    $.each( mediaData.files, function( key, mediaFilename) {
+      if ( mediaFilename.indexOf( "mp4") !== false ||  mediaFilename.indexOf( "webm") !== false) {
+        videoFilename = mediaFilename;
+      }
+    });
+
+    stopMotionMode.showStopMotionPreview( videoFilename);
     animateWindows();
   }
   else if( newMediaType === 'audio') {
