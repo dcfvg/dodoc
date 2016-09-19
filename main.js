@@ -1556,7 +1556,8 @@ PUBLIS METHODS
       var proc = new ffmpeg({ "source" : originalVideoPath})
         //.addInput(audioFile)
         .withVideoCodec('libx264')
-        .addOptions(['-qmin 0', '-qmax 50', '-crf 5', '-pix_fmt yuv420p'])
+//         .addOptions(['-qmin 0', '-qmax 50', '-crf 5', '-pix_fmt yuv420p'])
+        .addOptions(['-vb 8000k', '-f mp4'])
         .save( newVideoPath)
         .on('error', function(err) {
           console.log('an error happened: ' + err.message);
@@ -1566,9 +1567,9 @@ PUBLIS METHODS
           console.log('Compiling video: ' + progress.frames + ' frames done');
         })
         .on('end', function() {
-          fs.unlink(originalVideoPath, function() {
+//           fs.unlink(originalVideoPath, function() {
             resolve();
-          });
+//           });
         });
     });
 	}
