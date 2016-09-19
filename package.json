@@ -4,7 +4,7 @@
   "description": "Dodoc is a documentation tool for children",
   "repository": {
     "type": "git",
-    "url": "git://github.com//sarahgarcin/opendoc-tangible.git"
+    "url": "git://github.com/sarahgarcin/opendoc-tangible.git"
   },
   "dependencies": {
     "body-parser": "^1.15.0",
@@ -34,7 +34,7 @@
     "thumbbot": "^0.4.1",
     "underscore": "*",
     "video-recorder": "*",
-    "woods-parsedown": "git://github.com/louis-ev/woods-parsedown.git#commit-ish"
+    "woods-parsedown": "git://github.com/louis-ev/woods-parsedown.git#master"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
