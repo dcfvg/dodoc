@@ -105,10 +105,6 @@
         .logo {
           width:  100%;
           height:   22vh;
-
-          // &::after {
-          //   opacity: 0;
-          // }
         }
 
         .item {
@@ -184,8 +180,6 @@
         border-radius: 0;
         background-color: transparent;
 
-        color: white;
-
         padding: 10px;
 
         padding-left: 15px;
@@ -203,23 +197,23 @@
         }
 
         $transparentize: 0;
+        $skewangle: -20deg;
 
         &::after {
           content: ' ';
           position: absolute;
           left: 5px;
-          right: 0px;
-          top:      3px;
+          right: 5px;
+            height:   5px;
           bottom:  5px;
           -webkit-transition: all .1s;
           transition: all .1s;
           z-index: -1;
-          -webkit-transform: skewX(-20deg) skewY(0);
-          -ms-transform: skewX(-20deg) skewY(0);
-          -o-transform: skewX(-20deg) skewY(0);
-          transform: skewX(-20deg) skewY(0);
+          -webkit-transform: skewX($skewangle) skewY(0);
+          -ms-transform: skewX($skewangle) skewY(0);
+          -o-transform: skewX($skewangle) skewY(0);
+          transform: skewX($skewangle) skewY(0);
 
-           border-radius: 4px;
           background-color: transparentize( $c-projet, $transparentize);
 
           transition: background-color .2s;
@@ -239,6 +233,7 @@
 
 
         &_dossier {
+          color: $c-dossier;
           &::after {
             background-color: transparentize( $c-dossier, $transparentize);
           }
@@ -252,6 +247,7 @@
 
 
         &_bibli {
+          color: $c-bibli;
           &::after {
             background-color: transparentize( $c-bibli, $transparentize);
           }
@@ -261,6 +257,7 @@
         }
 
         &_capture {
+          color: $c-images;
           &::after {
             background-color: $c-images;
             background-color: transparentize( $c-images, $transparentize);
@@ -272,6 +269,7 @@
         }
 
         &_projet {
+          color: $c-projet;
 
         }
       }
